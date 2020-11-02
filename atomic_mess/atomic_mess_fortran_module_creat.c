@@ -25,7 +25,7 @@ int main()
             "\treal( kind = 8) :: mass\n"
             "\treal( kind = 8)_:: abundance\n"
             "END TYPE atom_mess\n");
-    fprintf( wfp, "TYPE( atom_mess ), dimension(%d) :: atom\n");
+    fprintf( wfp, "TYPE( atom_mess ), dimension(%d) :: atom\n", 500);
     index_for = 0;
     while( fgets( buff, MAX_SIZE, fp) != NULL )
     {
