@@ -6,7 +6,7 @@ TYPE :: atom_mess
 	real( kind = 8) :: mass
 	real( kind = 8)_:: abundance
 END TYPE atom_mess
-TYPE( atom_mess ), dimension(4197504) :: atom
+TYPE( atom_mess ), dimension(500) :: atom
 atom(1)%protron = 1
 atom(1)%neutron = 1 - 1
 atom(1)%isotope = H
