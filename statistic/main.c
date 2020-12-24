@@ -1,4 +1,4 @@
-﻿#include <stdio.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <float.h>
 #include <string.h>
@@ -35,16 +35,17 @@ int main(int argv, char* argc[])
 	double d1, d2;
     char str[31],str1[31], str2[31];
     FILE* fp;
-    FILE*  disp;
+    FILE* disp;
+    FILE* avep;
     double min_d, max_d, aver, var;
     long total;
     long dis[DIV_N + 1];
     double div_l;
-    int dis_switch;
+    int dis_switch = 0;
+    int ave_switch = 0;
     //printf("%.10e, %.10e\n", FLT_MIN, FLT_MAX);
     //return 0;
 	
-    dis_switch = 0;
 	for (i = 1; i < argv; i++)
 	{
         strcpy(str, argc[i]);
@@ -52,8 +53,18 @@ int main(int argv, char* argc[])
         {
             switch(str[1])
             {
+            case 'h':
+                printf( " statistic : a program for calculate the statistic information of a file\n"\
+                        "             The format of the file:  num1 num2\n"\
+                        "      argc : -a the continue average of the follow files\n"\
+                        "             -d the distribution of the follow files\n"\
+                        "             -h help manual\n");
+                return 0;
             case 'd':
                 dis_switch = 1;
+                break;
+            case 'a':
+                ave_switch = 1;
                 break;
             default:
                 break;
@@ -113,6 +124,26 @@ int main(int argv, char* argc[])
             }
 
             fclose(disp);
+        }
+        if(ave_switch)
+        {
+            strcat(str, "_ave.txt");
+            if( fopen_n(&avep, str, "w", argc[i]) == -1)
+                continue;
+            if(fseek(fp, 0, SEEK_SET) != 0)
+            {
+                perror("fseek");
+                continue;
+            }
+            total = 0;
+            aver = 0.0;
+		    while (fscanf(fp, "%s %s", str1, str2) != EOF)
+		    {
+                aver += atof(str2);
+                total++;
+                fprintf(avep, "%lf, %lf\n", atof(str1), aver / (double)total);
+		    }
+            fclose(avep);
         }
 		fclose(fp);
 	}
